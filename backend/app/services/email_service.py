@@ -64,10 +64,12 @@ def send_email(to_email: str, subject: str, body: str, html_body: str | None = N
         print(f"[ClipForge Email] OTP email sent to {to_email}")
         return True
     except Exception as exc:
+        import traceback
+
         print("\n[ClipForge Email ERROR]")
         print(f"Could not send email to {to_email}")
-        print(f"Error: {exc}")
-        print("Check Gmail App Password, SMTP_USER, SMTP_PASS, and 2-Step Verification.")
+        print(f"Error: {repr(exc)}")
+        traceback.print_exc()
         print("[End Email ERROR]\n")
         return False
 

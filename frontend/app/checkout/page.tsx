@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { apiFetch, clearToken, getCurrentUser, getToken } from "../../lib/auth";
 
 type Plan = {
@@ -65,7 +65,7 @@ function featureText(key: string): string {
   return map[key] || key.replaceAll("_", " ");
 }
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const autoStartedRef = useRef(false);
@@ -473,5 +473,13 @@ export default function CheckoutPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback=<main className="min-h-screen bg-[#EEF4FF] px-4 py-8 text-slate-950">Loading...</main>>
+      <CheckoutContent />
+    </Suspense>
   );
 }

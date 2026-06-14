@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { apiFetch, getCurrentUser, getToken } from "../../lib/auth";
 
 function getErrorMessage(data: any): string {
@@ -11,7 +11,7 @@ function getErrorMessage(data: any): string {
   return "Something went wrong. Please try again.";
 }
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextUrl = searchParams.get("next") || "/dashboard";
@@ -219,5 +219,13 @@ export default function VerifyEmailPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback=<main className="min-h-screen bg-[#EEF4FF] px-4 py-8 text-slate-950">Loading...</main>>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }

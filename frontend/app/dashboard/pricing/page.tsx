@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { apiFetch, clearToken, getCurrentUser, getToken } from "../../../lib/auth";
 
 type Plan = {
@@ -75,7 +75,7 @@ function loadRazorpayScript(): Promise<boolean> {
   });
 }
 
-export default function PricingPage() {
+function PricingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const autoCheckoutRef = useRef(false);
@@ -547,5 +547,13 @@ export default function PricingPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function PricingPage() {
+  return (
+    <Suspense fallback=<main className="min-h-screen bg-[#EEF4FF] px-4 py-8 text-slate-950">Loading...</main>>
+      <PricingContent />
+    </Suspense>
   );
 }

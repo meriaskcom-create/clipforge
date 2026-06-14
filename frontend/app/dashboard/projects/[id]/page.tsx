@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { apiFetch, clearToken, getCurrentUser, getToken } from "../../../../lib/auth";
 
 const backendUrl = "http://localhost:8000";
@@ -73,7 +73,7 @@ function featureList(project: any) {
   return features;
 }
 
-export default function ProjectDetailsPage() {
+function ProjectDetailsContent() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const searchParams = useSearchParams();
@@ -345,5 +345,13 @@ export default function ProjectDetailsPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ProjectDetailsPage() {
+  return (
+    <Suspense fallback=<main className="min-h-screen bg-[#EEF4FF] px-4 py-8 text-slate-950">Loading...</main>>
+      <ProjectDetailsContent />
+    </Suspense>
   );
 }

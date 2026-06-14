@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { API_URL, setToken } from "../../lib/auth";
 
 function getErrorMessage(data: any): string {
@@ -11,7 +11,7 @@ function getErrorMessage(data: any): string {
   return "Signup failed. Please try again.";
 }
 
-export default function SignupPage() {
+function SignupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const selectedPlan = searchParams.get("plan");
@@ -181,5 +181,13 @@ export default function SignupPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback=<main className="min-h-screen bg-[#EEF4FF] px-4 py-8 text-slate-950">Loading...</main>>
+      <SignupContent />
+    </Suspense>
   );
 }

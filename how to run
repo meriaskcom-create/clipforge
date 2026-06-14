@@ -1,0 +1,65 @@
+
+
+Frontend: Next.js
+Backend: FastAPI
+Database: PostgreSQL
+Queue: Redis
+Worker: Celery
+Processing: FFmpeg
+Payments: Stripe + Razorpay
+
+
+
+
+
+
+
+cd C:\Users\hp\Downloads\clipforge\frontend
+npm install
+npm run dev
+
+
+cd backend
+venv\Scripts\activate
+python -m uvicorn app.main:app --reload
+                 
+cd C:\Users\hp\Downloads\clipforge\backend
+venv\Scripts\activate
+python -m celery -A app.workers.celery_app worker --loglevel=info --pool=solo -Q download_queue,clip_queue,branding_queue,zip_queue,celery
+
+
+https://youtu.be/JVUQDE8vLxw?si=oa7_7-Q-Pysyk2TS
+
+
+
+
+
+
+
+Safe to Delete ✅
+Frontend
+frontend/node_modules/
+frontend/.next/
+Backend
+backend/venv/
+backend/__pycache__/
+
+Ye source code nahi hain.
+
+
+
+
+Primary      #2563EB
+Primary Hover #0633ad
+
+Background   #79a1fd
+Card         #FFFFFF
+
+Success      #22C55E
+Warning      #F59E0B
+Danger       #EF4444
+
+Text         #F8FAFC
+Muted        #94A3B8
+
+Accent       #06B6D4

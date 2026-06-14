@@ -1,0 +1,55 @@
+services:
+  db:
+    image: postgres:16
+    container_name: clipforge_postgres
+    environment:
+      POSTGRES_USER: clipforge
+      POSTGRES_PASSWORD: clipforge
+      POSTGRES_DB: clipforge
+    ports:
+      - "5432:5432"
+    volumes:
+      - clipforge_pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: clipforge_redis
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    container_name: clipforge_backend
+    env_file:
+      - .env
+    volumes:
+      - ./storage:/storage
+    environment:
+      DATABASE_URL: postgresql://clipforge:clipforge@db:5432/clipforge
+      REDIS_URL: redis://redis:6379/0
+      LOCAL_STORAGE_PATH: /storage
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+
+  worker:
+    build: ./backend
+    container_name: clipforge_worker
+    env_file:
+      - .env
+    command: celery -A app.workers.celery_app.celery_app worker --loglevel=info --pool=solo
+    volumes:
+      - ./storage:/storage
+    environment:
+      DATABASE_URL: postgresql://clipforge:clipforge@db:5432/clipforge
+      REDIS_URL: redis://redis:6379/0
+      LOCAL_STORAGE_PATH: /storage
+    depends_on:
+      - db
+      - redis
+      - backend
+
+volumes:
+  clipforge_pgdata:

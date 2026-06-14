@@ -17,7 +17,19 @@ def _smtp_from() -> str:
 
 
 def is_smtp_configured() -> bool:
-    return bool(settings.smtp_host and settings.smtp_port and _smtp_user() and _smtp_pass())
+    configured = bool(settings.smtp_host and settings.smtp_port and _smtp_user() and _smtp_pass())
+    print(
+        "[SMTP DEBUG]",
+        {
+            "smtp_host": bool(settings.smtp_host),
+            "smtp_port": settings.smtp_port,
+            "smtp_user": bool(_smtp_user()),
+            "smtp_pass": bool(_smtp_pass()),
+            "smtp_from": bool(_smtp_from()),
+            "configured": configured,
+        },
+    )
+    return configured
 
 
 def send_email(to_email: str, subject: str, body: str, html_body: str | None = None) -> bool:

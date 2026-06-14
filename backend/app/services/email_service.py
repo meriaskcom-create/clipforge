@@ -54,11 +54,11 @@ def send_email(to_email: str, subject: str, body: str, html_body: str | None = N
         message.add_alternative(html_body, subtype="html")
 
     try:
-        with smtplib.SMTP(settings.smtp_host, int(settings.smtp_port), timeout=30) as smtp:
-            smtp.ehlo()
-            if settings.smtp_use_tls:
-                smtp.starttls()
-                smtp.ehlo()
+        with smtplib.SMTP_SSL(
+            settings.smtp_host,
+            int(settings.smtp_port),
+                timeout=30,
+        ) as smtp:
             smtp.login(_smtp_user(), _smtp_pass())
             smtp.send_message(message)
         print(f"[ClipForge Email] OTP email sent to {to_email}")

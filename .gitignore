@@ -56,6 +56,11 @@ __pycache__/
 storage/
 backend/storage/
 
+# IMPORTANT
+# backend/app/storage source code ko git me allow karo
+!backend/app/storage/
+!backend/app/storage/**
+
 uploads/
 downloads/
 
@@ -66,9 +71,6 @@ temp/
 
 # ZIP outputs
 *.zip
-
-# IMPORTANT:
-# Remove above *.zip line if you want to upload release ZIPs manually
 
 # =========================
 # IDE

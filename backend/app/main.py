@@ -14,8 +14,9 @@ from app.database.init_db import init_db
 async def lifespan(app: FastAPI):
     os.makedirs(settings.local_storage_path, exist_ok=True)
 
-    if settings.app_env == "development":
-        init_db()
+    # Create required database tables and seed plans on startup.
+    # This is needed on first deploy because Render PostgreSQL starts empty.
+    init_db()
 
     yield
 

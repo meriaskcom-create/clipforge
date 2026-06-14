@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,8 +12,11 @@ from app.database.init_db import init_db
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    os.makedirs(settings.local_storage_path, exist_ok=True)
+
     if settings.app_env == "development":
         init_db()
+
     yield
 
 
@@ -42,6 +46,7 @@ def health_check():
     return {"success": True, "message": "Backend healthy", "environment": settings.app_env}
 
 
+os.makedirs(settings.local_storage_path, exist_ok=True)
 app.mount("/storage", StaticFiles(directory=settings.local_storage_path), name="storage")
 
 app.include_router(api_router, prefix=settings.api_prefix)

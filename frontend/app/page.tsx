@@ -417,6 +417,60 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="overflow-hidden rounded-[2rem] border border-blue-200 bg-white shadow-lg ring-1 ring-blue-100">
+          <div className="bg-gradient-to-r from-[#2563EB] via-[#3B82F6] to-[#06B6D4] px-6 py-5 text-white sm:px-8">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-100">Acquisition Demo</p>
+            <h3 className="mt-2 text-2xl font-black tracking-tight">Live Demo Environment Notice</h3>
+          </div>
+
+          <div className="grid gap-6 p-6 sm:p-8 lg:grid-cols-[1.2fr_0.8fr]">
+            <div>
+              <p className="text-sm leading-7 text-slate-700">
+                This public demo is being showcased for acquisition and evaluation purposes. Core features including
+                YouTube video processing, reel generation workflow, branding tools, dashboard, subscriptions, user
+                management, project workflows, ZIP exports and admin controls are implemented in the product.
+              </p>
+
+              <p className="mt-3 text-sm leading-7 text-slate-700">
+                Email OTP delivery and live payment completion may be limited in this public demo because third-party
+                providers require domain, sender, KYC and payment gateway verification. These integrations are already
+                built into the system and can be connected to the buyer&apos;s own verified Email and Payment accounts.
+              </p>
+
+              <div className="mt-5 rounded-2xl bg-[#EEF4FF] p-4 text-sm leading-6 text-slate-700 ring-1 ring-blue-100">
+                <p className="font-black text-slate-950">Important for buyers</p>
+                <p className="mt-1">
+                  This deployment is intended for product review. Production use requires connecting verified provider
+                  accounts such as Email API, Razorpay/Stripe and approved business/domain settings.
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-[1.5rem] bg-slate-950 p-5 text-white shadow-xl">
+              <p className="text-sm font-black text-[#06B6D4]">Demo Login Credentials</p>
+
+              <div className="mt-4 space-y-4 text-sm">
+                <div className="rounded-2xl bg-white/10 p-4 ring-1 ring-white/10">
+                  <p className="font-black text-white">Admin Demo Access</p>
+                  <p className="mt-2 text-slate-300"><span className="font-bold text-white">Email:</span> meriask.com@gmail.com</p>
+                  <p className="text-slate-300"><span className="font-bold text-white">Password:</span> asdfgh</p>
+                  <p className="mt-2 text-xs text-slate-400">After login, open /admin to review admin panel.</p>
+                </div>
+
+                <div className="rounded-2xl bg-white/10 p-4 ring-1 ring-white/10">
+                  <p className="font-black text-white">User Demo Access</p>
+                  <p className="mt-2 text-slate-300"><span className="font-bold text-white">Email:</span> bhaktikichhaya@gmail.com</p>
+                  <p className="text-slate-300"><span className="font-bold text-white">Password:</span> asdfgh</p>
+                  <p className="mt-2 text-xs text-slate-400">Temporary public credentials for evaluation only.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
         <SectionTitle
           eyebrow="How it works"

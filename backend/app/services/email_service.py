@@ -1,76 +1,42 @@
-import smtplib
-from email.message import EmailMessage
-
+import resend
 from app.core.config import settings
+import os
 
 
-def _smtp_user() -> str:
-    return (settings.smtp_user or settings.smtp_username or "").strip()
+def _resend_api_key() -> str:
+    return os.getenv("RESEND_API_KEY", "").strip()
 
 
-def _smtp_pass() -> str:
-    return (settings.smtp_pass or settings.smtp_password or "").strip()
-
-
-def _smtp_from() -> str:
-    return (settings.smtp_from or _smtp_user()).strip()
-
-
-def is_smtp_configured() -> bool:
-    configured = bool(settings.smtp_host and settings.smtp_port and _smtp_user() and _smtp_pass())
-    print(
-        "[SMTP DEBUG]",
-        {
-            "smtp_host": bool(settings.smtp_host),
-            "smtp_port": settings.smtp_port,
-            "smtp_user": bool(_smtp_user()),
-            "smtp_pass": bool(_smtp_pass()),
-            "smtp_from": bool(_smtp_from()),
-            "configured": configured,
-        },
-    )
-    return configured
+def _resend_from() -> str:
+    return os.getenv("RESEND_FROM", "ClipForge <onboarding@resend.dev>").strip()
 
 
 def send_email(to_email: str, subject: str, body: str, html_body: str | None = None) -> bool:
-    if not is_smtp_configured():
-        print("\n[ClipForge Email DEV MODE - SMTP not configured]")
-        print("Add SMTP_USER + SMTP_PASS in backend/.env to send Gmail OTP.")
-        print(f"To: {to_email}")
-        print(f"Subject: {subject}")
-        print(body)
-        print("[End Email]\n")
+    api_key = _resend_api_key()
+
+    if not api_key:
+        print("[Resend Email ERROR] RESEND_API_KEY not configured")
         return False
 
-    from_email = _smtp_from()
-
-    message = EmailMessage()
-    message["From"] = from_email
-    message["To"] = to_email
-    message["Subject"] = subject
-    message.set_content(body)
-
-    if html_body:
-        message.add_alternative(html_body, subtype="html")
+    resend.api_key = api_key
 
     try:
-        with smtplib.SMTP_SSL(
-            settings.smtp_host,
-            int(settings.smtp_port),
-                timeout=30,
-        ) as smtp:
-            smtp.login(_smtp_user(), _smtp_pass())
-            smtp.send_message(message)
-        print(f"[ClipForge Email] OTP email sent to {to_email}")
-        return True
-    except Exception as exc:
-        import traceback
+        resend.Emails.send({
+            "from": _resend_from(),
+            "to": [to_email],
+            "subject": subject,
+            "html": html_body or body.replace("\n", "<br>"),
+            "text": body,
+        })
 
-        print("\n[ClipForge Email ERROR]")
+        print(f"[Resend Email] OTP email sent to {to_email}")
+        return True
+
+    except Exception as exc:
+        print("\n[Resend Email ERROR]")
         print(f"Could not send email to {to_email}")
         print(f"Error: {repr(exc)}")
-        traceback.print_exc()
-        print("[End Email ERROR]\n")
+        print("[End Resend Email ERROR]\n")
         return False
 
 

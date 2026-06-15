@@ -12,3 +12,4 @@ yt-dlp
 python-multipart
 Pillow
 stripe
+resend

@@ -42,6 +42,22 @@ export default function LoginPage() {
         return;
       }
 
+      try {
+        const meRes = await fetch(`${API_URL}/auth/me`, {
+          headers: { Authorization: `Bearer ${data.token}` },
+          cache: "no-store",
+        });
+
+        const meData = await meRes.json().catch(() => null);
+
+        if (meRes.ok && meData?.user?.is_admin) {
+          router.push("/admin");
+          return;
+        }
+      } catch {
+        // Agar admin check fail ho jaye to normal dashboard par bhej do.
+      }
+
       router.push("/dashboard");
     } catch {
       setError("Backend connect nahi ho raha.");
@@ -70,7 +86,7 @@ export default function LoginPage() {
 
             <div className="mt-20 max-w-2xl">
               <p className="inline-flex rounded-full bg-white/15 px-4 py-2 text-sm font-bold ring-1 ring-white/20">
-                YouTube → Reels → ZIP
+                YouTube â†’ Reels â†’ ZIP
               </p>
               <h1 className="mt-6 text-5xl font-black leading-tight tracking-tight xl:text-6xl">
                 Turn long videos into branded reels faster.
@@ -83,10 +99,10 @@ export default function LoginPage() {
 
           <div className="relative grid gap-4 xl:grid-cols-2">
             {[
-              ["🎬", "YouTube Clipping", "Long videos ko short reels me convert karo."],
-              ["✨", "Bulk Branding", "Uploaded reels par title, watermark aur logo add karo."],
-              ["📦", "ZIP Downloads", "All final clips ek ZIP me ready."],
-              ["⚡", "Queue Processing", "Multi-stage processing pipeline ready."],
+              ["ðŸŽ¬", "YouTube Clipping", "Long videos ko short reels me convert karo."],
+              ["âœ¨", "Bulk Branding", "Uploaded reels par title, watermark aur logo add karo."],
+              ["ðŸ“¦", "ZIP Downloads", "All final clips ek ZIP me ready."],
+              ["âš¡", "Queue Processing", "Multi-stage processing pipeline ready."],
             ].map(([icon, title, desc]) => (
               <div key={title} className="rounded-3xl bg-white/12 p-5 ring-1 ring-white/15 backdrop-blur">
                 <p className="text-2xl">{icon}</p>
@@ -155,7 +171,7 @@ export default function LoginPage() {
             </div>
 
             <p className="mt-6 text-center text-xs font-semibold text-slate-500">
-              Secure login • Dashboard access • Creator tools
+              Secure login â€¢ Dashboard access â€¢ Creator tools
             </p>
           </div>
         </section>
